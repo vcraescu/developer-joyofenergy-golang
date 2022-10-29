@@ -10,7 +10,7 @@ import (
 	"joi-energy-golang/domain"
 )
 
-func makeValidationMiddleware() endpoint.Middleware {
+func makeStoreReadingsValidationMiddleware() endpoint.Middleware {
 	return func(next endpoint.Endpoint) endpoint.Endpoint {
 		return func(ctx context.Context, req interface{}) (interface{}, error) {
 			msg, ok := req.(domain.StoreReadings)
@@ -20,6 +20,20 @@ func makeValidationMiddleware() endpoint.Middleware {
 			if err := validateStoreReadings(msg); err != nil {
 				return nil, fmt.Errorf("%w: %s", domain.ErrMissingArgument, err)
 			}
+			return next(ctx, req)
+		}
+	}
+}
+
+func makeGetReadingsValidationMiddleware() endpoint.Middleware {
+	return func(next endpoint.Endpoint) endpoint.Endpoint {
+		return func(ctx context.Context, req interface{}) (interface{}, error) {
+			msg, _ := req.(string)
+
+			if err := validateSmartMeterId(msg); err != nil {
+				return nil, fmt.Errorf("%w: %s", domain.ErrMissingArgument, err)
+			}
+
 			return next(ctx, req)
 		}
 	}
@@ -42,7 +56,11 @@ func validateStoreReadings(msg domain.StoreReadings) error {
 }
 
 func validateElectricityReadings(row domain.ElectricityReading) error {
-	return nil
+	return validation.ValidateStruct(
+		&row,
+		validation.Field(&row.Reading, validation.Required),
+		validation.Field(&row.Time, validation.Required),
+	)
 }
 
 func validateSmartMeterId(smartMeterId string) error {

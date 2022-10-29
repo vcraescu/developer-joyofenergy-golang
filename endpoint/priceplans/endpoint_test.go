@@ -11,6 +11,8 @@ import (
 )
 
 func TestCompareAllPricePlansReturnResultFromService(t *testing.T) {
+	t.Parallel()
+
 	s := &MockService{}
 	e := makeCompareAllPricePlansEndpoint(s)
 
@@ -22,6 +24,8 @@ func TestCompareAllPricePlansReturnResultFromService(t *testing.T) {
 }
 
 func TestCompareAllPricePlansHandleServiceError(t *testing.T) {
+	t.Parallel()
+
 	s := &MockService{err: errors.New("oops")}
 	e := makeCompareAllPricePlansEndpoint(s)
 

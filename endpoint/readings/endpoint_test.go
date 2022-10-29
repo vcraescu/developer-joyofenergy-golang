@@ -10,6 +10,8 @@ import (
 )
 
 func TestStoreReadingsReturnResultFromService(t *testing.T) {
+	t.Parallel()
+
 	s := &MockService{}
 	e := makeStoreReadingsEndpoint(s)
 

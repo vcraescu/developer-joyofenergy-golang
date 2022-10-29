@@ -11,6 +11,8 @@ import (
 )
 
 func TestExtractAcceptHeaderIntoContext_ExtractsAcceptHeaderValueIntoContext(t *testing.T) {
+	t.Parallel()
+
 	req := httptest.NewRequest("", "http://test", nil)
 	req.Header.Set("Accept", "application/x-download")
 
@@ -24,6 +26,8 @@ func TestExtractAcceptHeaderIntoContext_ExtractsAcceptHeaderValueIntoContext(t *
 }
 
 func TestExtractAcceptHeaderIntoContext_ExtractsContentTypeHeaderValueIntoContextWhenAcceptHeaderEmpty(t *testing.T) {
+	t.Parallel()
+
 	req := httptest.NewRequest("", "http://test", nil)
 	req.Header.Set("Content-Type", "application/important")
 
@@ -37,6 +41,8 @@ func TestExtractAcceptHeaderIntoContext_ExtractsContentTypeHeaderValueIntoContex
 }
 
 func TestExtractAcceptHeaderIntoContext_DefaultsToJSONWhenContentTypeAndAcceptHeaderEmpty(t *testing.T) {
+	t.Parallel()
+
 	req := httptest.NewRequest("", "http://test", nil)
 
 	ctx := context.Background()

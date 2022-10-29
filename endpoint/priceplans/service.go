@@ -15,9 +15,9 @@ type Service interface {
 }
 
 type service struct {
-	logger *logrus.Entry
+	logger     *logrus.Entry
 	pricePlans *repository.PricePlans
-	accounts *repository.Accounts
+	accounts   *repository.Accounts
 }
 
 func NewService(
@@ -57,6 +57,10 @@ func (s *service) RecommendPricePlans(smartMeterId string, limit uint64) (domain
 		})
 	}
 	sort.Slice(recommendations, func(i, j int) bool { return recommendations[i].Value < recommendations[j].Value })
+
+	if int(limit) > len(recommendations) {
+		limit = uint64(len(recommendations))
+	}
 
 	if limit > 0 {
 		recommendations = recommendations[:limit]

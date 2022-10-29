@@ -21,6 +21,8 @@ type MockService struct {
 func (s *MockService) StoreReadings(smartMeterId string, reading []domain.ElectricityReading) {}
 
 func TestMakeStoreReadingsHandler(t *testing.T) {
+	t.Parallel()
+
 	mockService := &MockService{}
 	mockLogger := logrus.New().WithField("test", "mock")
 	h := MakeStoreReadingsHandler(mockService, mockLogger)
@@ -44,6 +46,8 @@ func TestMakeStoreReadingsHandler(t *testing.T) {
 }
 
 func TestMakeStoreReadingsHandlerWithInvalidInput(t *testing.T) {
+	t.Parallel()
+
 	mockService := &MockService{}
 	mockLogger := logrus.New().WithField("test", "mock")
 	h := MakeStoreReadingsHandler(mockService, mockLogger)

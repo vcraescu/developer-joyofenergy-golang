@@ -31,7 +31,7 @@ func MakeStoreReadingsHandler(
 
 	mw := endpoint.Chain(
 		middleware.MakeAcceptHeaderValidationMiddleware(),
-		makeValidationMiddleware(),
+		makeStoreReadingsValidationMiddleware(),
 	)
 
 	endpointHandler := kithttp.NewServer(
@@ -57,6 +57,7 @@ func MakeGetReadingsHandler(
 
 	mw := endpoint.Chain(
 		middleware.MakeAcceptHeaderValidationMiddleware(),
+		makeGetReadingsValidationMiddleware(),
 	)
 
 	endpointHandler := kithttp.NewServer(

@@ -14,6 +14,8 @@ import (
 )
 
 func TestDecodeJSONRequest(t *testing.T) {
+	t.Parallel()
+
 	bodyValue := "Test"
 	body := fmt.Sprintf("\"%s\"", bodyValue)
 
@@ -28,6 +30,8 @@ func TestDecodeJSONRequest(t *testing.T) {
 }
 
 func TestEncodeJSONResponse(t *testing.T) {
+	t.Parallel()
+
 	bodyValue := "Test"
 	expected := fmt.Sprintf("\"%s\"", bodyValue)
 

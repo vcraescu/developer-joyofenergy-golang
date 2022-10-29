@@ -18,6 +18,8 @@ import (
 )
 
 func TestEncodeError(t *testing.T) {
+	t.Parallel()
+
 	testCases := []struct {
 		name               string
 		err                error
@@ -75,7 +77,11 @@ func TestEncodeError(t *testing.T) {
 	}
 
 	for _, tt := range testCases {
+		tt := tt
+
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			r := httptest.NewRecorder()
 			ctx := context.WithValue(context.Background(), contextkeys.AcceptHeader, "application/json")
 			MakeEncodeErrorFunc(logrus.NewEntry(logrus.StandardLogger()))(ctx, tt.err, r)

@@ -13,6 +13,8 @@ import (
 )
 
 func TestEndpointEndpointSuccess(t *testing.T) {
+	t.Parallel()
+
 	testHandler := setUpServer()
 
 	rr := httptest.NewRecorder()

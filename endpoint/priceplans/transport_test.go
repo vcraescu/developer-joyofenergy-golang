@@ -23,6 +23,8 @@ func (s *MockService) CompareAllPricePlans(smartMeterId string) (domain.PricePla
 }
 
 func TestMakeCompareAllPricePlanHandler(t *testing.T) {
+	t.Parallel()
+
 	mockService := &MockService{}
 	mockLogger := logrus.New().WithField("test", "mock")
 	h := MakeCompareAllPricePlansHandler(mockService, mockLogger)
@@ -41,6 +43,8 @@ func TestMakeCompareAllPricePlanHandler(t *testing.T) {
 }
 
 func TestMakeCompareAllPricePlansHandlerWithInvalidInput(t *testing.T) {
+	t.Parallel()
+
 	mockService := &MockService{}
 	mockLogger := logrus.New().WithField("test", "mock")
 	h := MakeCompareAllPricePlansHandler(mockService, mockLogger)

@@ -10,6 +10,8 @@ import (
 )
 
 func TestMakeAcceptHeaderValidationMiddlewareSucceedsWithJSON(t *testing.T) {
+	t.Parallel()
+
 	m := MakeAcceptHeaderValidationMiddleware()
 	ep := func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		return "", nil
@@ -21,6 +23,8 @@ func TestMakeAcceptHeaderValidationMiddlewareSucceedsWithJSON(t *testing.T) {
 }
 
 func TestMakeAcceptHeaderValidationMiddlewareFailsForInvalidHeaders(t *testing.T) {
+	t.Parallel()
+
 	negativeTestCases := []struct {
 		name         string
 		acceptHeader string
@@ -50,7 +54,10 @@ func TestMakeAcceptHeaderValidationMiddlewareFailsForInvalidHeaders(t *testing.T
 
 	for _, tt := range negativeTestCases {
 		tt := tt
+
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			m := MakeAcceptHeaderValidationMiddleware()
 			ep := func(ctx context.Context, request interface{}) (response interface{}, err error) {
 				return "", nil

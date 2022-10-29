@@ -12,12 +12,14 @@ import (
 )
 
 func TestCompareAllPricePlans(t *testing.T) {
+	t.Parallel()
+
 	accounts := repository.NewAccounts(map[string]string{"home-sweet-home": "test-plan"})
 	meterReadings := repository.NewMeterReadings(
 		map[string][]domain.ElectricityReading{"home-sweet-home": {{
 			Time:    time.Now(),
 			Reading: 5.0,
-		},{
+		}, {
 			Time:    time.Now().Add(-10 * time.Hour),
 			Reading: 15.0,
 		}}},
@@ -36,7 +38,7 @@ func TestCompareAllPricePlans(t *testing.T) {
 	)
 	plans, err := service.CompareAllPricePlans("home-sweet-home")
 	expected := domain.PricePlanComparisons{
-		PricePlanId:          "test-plan",
+		PricePlanId: "test-plan",
 		PricePlanComparisons: map[string]float64{
 			"test-plan": 3.0,
 		},

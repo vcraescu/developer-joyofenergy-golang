@@ -11,6 +11,8 @@ import (
 )
 
 func TestPutContentTypeIntoContext(t *testing.T) {
+	t.Parallel()
+
 	inputRequest := httptest.NewRequest("GET", "https://localhost/", nil)
 	inputRequest.Header.Add("content-type", "application/important")
 	ctx := ExtractContentTypeIntoContext(context.Background(), inputRequest)

@@ -12,6 +12,7 @@ func makeStoreReadingsEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(domain.StoreReadings)
 		s.StoreReadings(req.SmartMeterId, req.ElectricityReadings)
+
 		return req, nil
 	}
 }
@@ -19,13 +20,14 @@ func makeStoreReadingsEndpoint(s Service) endpoint.Endpoint {
 func makeGetReadingsEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(string)
-		err := validateSmartMeterId(req)
-		if err != nil {
-			return nil, err
-		}
 		res := s.GetReadings(req)
+
+		if res == nil {
+			return nil, domain.ErrNotFound
+		}
+
 		return domain.StoreReadings{
-			SmartMeterId: req,
+			SmartMeterId:        req,
 			ElectricityReadings: res,
 		}, nil
 	}
