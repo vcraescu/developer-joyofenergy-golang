@@ -21,25 +21,34 @@ func NewPricePlans(pricePlans []domain.PricePlan, meterReadings *MeterReadings) 
 func (p *PricePlans) ConsumptionCostOfElectricityReadingsForEachPricePlan(smartMeterId string) map[string]float64 {
 	electricityReadings := p.meterReadings.GetReadings(smartMeterId)
 	costs := map[string]float64{}
+
 	for _, plan := range p.pricePlans {
 		costs[plan.PlanName] = calculateCost(electricityReadings, plan)
 	}
+
 	return costs
 }
 
 func calculateCost(electricityReadings []domain.ElectricityReading, pricePlan domain.PricePlan) float64 {
-	average := calculateAverageReading(electricityReadings)
+	sum := calculateReadingSum(electricityReadings)
 	timeElapsed := calculateTimeElapsed(electricityReadings)
-	averagedCost := average / timeElapsed.Hours()
-	return averagedCost * pricePlan.UnitRate
+	costPerHour := sum / timeElapsed.Hours()
+
+	return costPerHour * pricePlan.UnitRate
 }
 
-func calculateAverageReading(electricityReadings []domain.ElectricityReading) float64 {
-	sum := 0.0
-	for _, r := range electricityReadings {
+func calculateReadingSum(electricityReadings []domain.ElectricityReading) float64 {
+	if len(electricityReadings) == 0 {
+		return 0
+	}
+
+	var sum float64
+
+	for _, r := range electricityReadings[1:] {
 		sum += r.Reading
 	}
-	return sum / float64(len(electricityReadings))
+
+	return sum
 }
 
 func calculateTimeElapsed(electricityReadings []domain.ElectricityReading) time.Duration {
